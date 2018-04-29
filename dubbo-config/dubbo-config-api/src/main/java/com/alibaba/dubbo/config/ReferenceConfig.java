@@ -187,6 +187,7 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
             return;
         }
         initialized = true;
+        // 必须要使用接口（可能和动态代理有关），但是如果是inJvm调用的话是否可以放开这个限制（todo）
         if (interfaceName == null || interfaceName.length() == 0) {
             throw new IllegalStateException("<dubbo:reference interface=\"\" /> interface not allow null!");
         }
@@ -200,6 +201,8 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
             interfaceClass = GenericService.class;
         } else {
             try {
+                // 获取动态代理想要的接口信息
+                // reference bean 中配置获得
                 interfaceClass = Class.forName(interfaceName, true, Thread.currentThread()
                         .getContextClassLoader());
             } catch (ClassNotFoundException e) {
@@ -209,6 +212,7 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
         }
         String resolve = System.getProperty(interfaceName);
         String resolveFile = null;
+        // resolve file 优于配置（用于bean的加载，虽然不知道为什么 todo）
         if (resolve == null || resolve.length() == 0) {
             resolveFile = System.getProperty("dubbo.resolve.file");
             if (resolveFile == null || resolveFile.length() == 0) {

@@ -41,6 +41,9 @@ public class DubboNamespaceHandler extends NamespaceHandlerSupport {
 
     @Override
     public void init() {
+        // 所有的xml的关键字都在这里进行转义
+        // 在DubboBeanDefinitionParse的BeanClass全是通过这里生成的
+        // 与Bean的映射关系是在spring.handlers完成的
         registerBeanDefinitionParser("application", new DubboBeanDefinitionParser(ApplicationConfig.class, true));
         registerBeanDefinitionParser("module", new DubboBeanDefinitionParser(ModuleConfig.class, true));
         registerBeanDefinitionParser("registry", new DubboBeanDefinitionParser(RegistryConfig.class, true));
